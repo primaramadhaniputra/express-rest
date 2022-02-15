@@ -1,30 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const { example, getData, deleteData, updateData } = require('../../Controllers/V1/Controllers')
+const { getData, deleteData, getDetail } = require('../../Controllers/V1/Controllers');
+const { postValidasi, updateValidasi } = require('../../validasi/user_validasi')
 
-// defaultRoutes = [
-//    {
-//       path: '/admin',
-//       route: require('./admin')
-//    },
-//    {
-//       path: '/owners',
-//       route: require('./owner')
-//    },
-//    {
-//       path: '/mining-contractors',
-//       route: require('./api')
-//    }
-// ];
 
-// defaultRoutes.forEach(route => {
-// });
-// router.use('/get')
-// router.use('/', example);
-router.post('/', example)
-router.get('/', getData)
-router.delete('/delete/:id', deleteData)
-router.put('/update/:id', updateData)
+router.get('/users', getData)
+router.get('/users/detail/:id', getDetail)
+router.post('/users', postValidasi)
+router.delete('/users/delete/:id', deleteData)
+router.put('/users/update/:id', updateValidasi)
+
+
 
 
 module.exports = router;
