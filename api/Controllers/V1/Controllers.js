@@ -1,7 +1,7 @@
 const res = require('express/lib/response');
 const { User } = require('../../../models');
-const generator = require('generate-password');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const getData = async (request, response) => {
    try {
@@ -23,6 +23,8 @@ const getData = async (request, response) => {
 const getDetail = async (request, response) => {
    const data = await User.findOne({ where: { id: request.params.id } })
 
+   // response.send(data)
+
    if (data) {
       response.send({
          code: 200,
@@ -41,13 +43,10 @@ const getDetail = async (request, response) => {
 }
 
 const postData = async function (request, response) {
+
    let password = request.body.password
 
-
-   password = generator.generate({
-      length: 10,
-      numbers: true
-   });
+   password = await bcrypt.hash(password, 10)
 
    const test = await User.create({
       username: request.body.username,
@@ -105,24 +104,35 @@ const updateData = async (request, response) => {
 const login = async (request, response) => {
    let { email, username, password } = request.body
 
+
    const user = await User.findOne({
       where: { email: email }
    })
-   const token = await jwt.sign({ email }, '1231asdfsafd4sdgt', { expiresIn: 360000000 })
    if (!user) {
       return response.send({
-         code: 404,
-         status: 'not ok',
-         message: 'Error credentials',
+         status: 404,
+         message: 'error credentials'
+
       })
    }
-   response.send({
-      code: 200,
-      status: 'ok',
-      message: 'berhasil Login',
-      token,
-      data: user
-   })
+   const userPass = await bcrypt.compare(password, user.password);
+   if (userPass) {
+
+      const token = await jwt.sign({ email }, '1231asdfsafd4sdgt', { expiresIn: 360000000 })
+
+      response.send({
+         code: 200,
+         status: 'ok',
+         message: 'berhasil Login',
+         token,
+         data: user
+      })
+   } else {
+      res.send({
+         status: '400',
+         message: 'error'
+      })
+   }
 }
 
 module.exports = { getData, postData, deleteData, updateData, getDetail, login }
