@@ -46,9 +46,11 @@ const postData = async function (request, response) {
 
    let password = request.body.password
 
+   const token = await jwt.sign({ email: request.body.email }, '1231asdfsafd4sdgt', { expiresIn: 360000000 })
+
    password = await bcrypt.hash(password, 10)
 
-   const test = await User.create({
+   const data = await User.create({
       username: request.body.username,
       email: request.body.email,
       password
@@ -59,7 +61,9 @@ const postData = async function (request, response) {
       code: 200,
       status: 'ok',
       message: 'berhasil membuat user baru',
-      data: test
+      data: data,
+      token
+
    })
 
 };
@@ -118,13 +122,11 @@ const login = async (request, response) => {
    const userPass = await bcrypt.compare(password, user.password);
    if (userPass) {
 
-      const token = await jwt.sign({ email }, '1231asdfsafd4sdgt', { expiresIn: 360000000 })
 
       response.send({
          code: 200,
          status: 'ok',
          message: 'berhasil Login',
-         token,
          data: user
       })
    } else {
