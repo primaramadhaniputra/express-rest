@@ -18,24 +18,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // use routes here!
 app.use('/v1', firstVersionRoute);
-// app.use('/v1/post', async (req, res, next) => {
-//    const token = req.header('token')
-
-//    if (!token) {
-//       return res.send('free course')
-//    }
-//    try {
-//       const userToken = await jwt.verify(token, '1231asdfsafd4sdgt')
-//       res.send('paid course')
-//    } catch (error) {
-//       res.send('free course')
-
-//    }
-//    // if ()
-
-// }, (req, res) => {
-
-// });
 
 app.use(async (request, response, next) => next(Error('Internet Server Error')));
 app.use(async (err, request, response, next) => {

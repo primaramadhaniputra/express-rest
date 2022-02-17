@@ -3,12 +3,12 @@ const { Model, Sequelize } = require('sequelize');
 // const bcrypt = require('bcrypt');
 
 module.exports = (sequelize, DataTypes) => {
-   class User extends Model {
+   class Faqs extends Model {
       static associate(models) {
          // define association here
       };
    };
-   User.init({
+   Faqs.init({
       id: {
          type: DataTypes.INTEGER,
          defaultValue: DataTypes.UUIDV4,
@@ -16,25 +16,33 @@ module.exports = (sequelize, DataTypes) => {
          unique: true,
          allowNull: true
       },
-      password: {
+      question: {
          type: DataTypes.STRING,
-         allowNull: true
+         allowNull: false
       },
 
-      username: {
+      slug: {
          type: DataTypes.STRING,
-         allowNull: true
+         allowNull: false
       },
-      email: {
+      answer: {
          type: DataTypes.STRING,
-         allowNull: true
+         allowNull: false
       },
+      status: {
+         type: DataTypes.STRING,
+      },
+
 
 
    }, {
+
       sequelize,
-      modelName: 'User',
-      tableName: 'user',
+      deletedAt: 'deleted_At',
+      modelName: 'Faqs',
+      paranoid: true,
+      tableName: 'faqs',
+      timestamps: true
    });
-   return User;
+   return Faqs;
 };
