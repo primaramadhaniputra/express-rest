@@ -1,7 +1,7 @@
 const res = require('express/lib/response');
 const { Faqs } = require('../../../models');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+// const jwt = require('jsonwebtoken');
+// const bcrypt = require('bcrypt');
 
 
 const postFaqs = async (req, res) => {
@@ -47,15 +47,17 @@ const getFaqs = async (req, res) => {
    try {
       const data = await Faqs.findAll()
       const total = data.length
+      const totalPage = Math.round(total / 5)
+      const page = req.query.page
       res.send({
          code: 200,
          statusMsg: 'ok',
          data,
          meta: {
             total,
-            totlaPage: 1,
-            page: 1,
-            perPage: 1
+            totalPage: totalPage,
+            page: page,
+            perPage: 5
          }
       })
    } catch (error) {
