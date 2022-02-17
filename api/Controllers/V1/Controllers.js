@@ -1,12 +1,22 @@
 const res = require('express/lib/response');
 const { Faqs } = require('../../../models');
-// const jwt = require('jsonwebtoken');
-// const bcrypt = require('bcrypt');
-
+const Joi = require('joi');
+const schema = require('../../../helpers/schema')
 
 const postFaqs = async (req, res) => {
 
 
+   const validasi = schema.validate({ question: req.body.question, answer: req.body.answer });
+
+   if (validasi.error) {
+      return res.send(validasi)
+   }
+
+   if (!req.file) {
+      res.send('image harus di kirim')
+   }
+
+   const img = req.file.path
    const time = new Date().getTime()
 
    let { question, answer, status } = req.body
@@ -19,6 +29,7 @@ const postFaqs = async (req, res) => {
          slug,
          answer,
          status,
+         image: img
       })
 
 
@@ -31,6 +42,7 @@ const postFaqs = async (req, res) => {
             answer,
             status,
             createdAt: time
+
          }
       })
    } catch (error) {

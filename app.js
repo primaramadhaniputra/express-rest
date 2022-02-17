@@ -9,6 +9,10 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken')
 // import any routes here!
 const firstVersionRoute = require('./api/Routes/V1');
+const { fileFilter, fileStorage } = require('./helpers/multer');
+const multer = require('multer')
+
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single('image'))
 
 app.use(logger('dev'));
 app.use(express.json());

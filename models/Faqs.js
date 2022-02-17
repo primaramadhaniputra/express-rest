@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
          type: DataTypes.STRING,
          allowNull: false
       },
+      image: {
+         type: DataTypes.STRING,
+         allowNull: false
+      },
 
       slug: {
          type: DataTypes.STRING,
@@ -32,7 +36,9 @@ module.exports = (sequelize, DataTypes) => {
       status: {
          type: DataTypes.STRING,
       },
-
+      // image: {
+      //    type: DataTypes.STRING
+      // }
 
 
    }, {
