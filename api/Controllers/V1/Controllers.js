@@ -48,7 +48,7 @@ const getFaqs = async (req, res) => {
       const data = await Faqs.findAll()
       const total = data.length
       const totalPage = Math.round(total / 5)
-      const page = req.query.page
+      const page = req.query.page ? req.query.page : '1'
       res.send({
          code: 200,
          statusMsg: 'ok',
